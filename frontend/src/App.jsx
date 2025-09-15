@@ -13,7 +13,7 @@ import { Principal } from "./components/Principal.jsx";
 import { ServiceDetailPage } from "./components/ServiceCardDetail.jsx";
 import { ChatComponent } from "./components/Chat.jsx";
 import { UserProfile } from "./components/UserPerfil.jsx";
-//import { MisServicios } from "./components/MisServicios.jsx";
+import { MisServicios } from "./components/misServicios.jsx";
 import { CreateServicePage } from "./components/CreateService.jsx";
 import { OrderConfirmationPage } from "./components/PedidoPage.jsx";
 import { PerfilUsuario } from "./components/PerfilesUsuarios.jsx";
@@ -64,7 +64,7 @@ export function App() {
             <Route path="/service" element={<ServiceDetailPage />} />
             <Route path="/Chat" element={<ChatComponent></ChatComponent>}></Route>
             <Route path="/user-profile" element={<UserProfile></UserProfile>}></Route>
-            {/* <Route path="/Mis-servicios" element={<MisServicios></MisServicios>}></Route> */}
+            <Route path="/Mis-servicios" element={<MisServicios></MisServicios>}></Route>
             <Route path="/crear-servicio" element={<CreateServicePage></CreateServicePage>}></Route>
             <Route path="/pedido-page" element={<OrderConfirmationPage></OrderConfirmationPage>}></Route>
             <Route path="/perfil-usuario" element={<PerfilUsuario></PerfilUsuario>} />
