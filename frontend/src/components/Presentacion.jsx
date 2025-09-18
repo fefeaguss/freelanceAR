@@ -7,13 +7,13 @@ export function Presentacion() {
       <section className=" grid grid-rows-1 grid-flow-col gap-4  min-h-screen items-center   text-center">
         <div className="row-span-2 ">
           <img
-            src="src/assets/freelancear.png"
+            src="/src/assets/ChatGPT Image 17 sept 2025, 15_34_18.png"
             alt="Logo de la página"
-            className="mx-auto h-52 w-76"
+            className="mx-auto h-100 w-100vh object-contain"
           />
         </div>
 
-        <div class="row-span-1 ml-32">
+        <div class="row-span-1 ">
           <h1 className="text-4xl font-extrabold text-yellow-400 mb-4">
             Bienvenido a FreelanceAR
           </h1>

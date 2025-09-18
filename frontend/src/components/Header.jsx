@@ -30,15 +30,28 @@ export function Headers() {
     navigate("/user-profile", { state: { usuario: user } });
   };
 
+  const handleSearch = async () => {
+  if (!query.trim()) return;
+  try {
+    const response = await fetch(`http://localhost:8000/v1/buscar?q=${query}`);
+    const data = await response.json();
+    onResults(data); // acá recibís los servicios listos para mostrar
+  } catch (error) {
+    console.error("Error buscando servicios:", error);
+  }
+};
+
+  };
+
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
   return (
-    <header className="flex justify-between bg-azulClaro fixed top-0 left-0 h-16 w-full p-4 z-50 text-white items-center">
+    <header className="flex justify-between bg-azulClaro fixed top-0 left-0 h-18 w-full p-4 z-50 text-white items-center">
       {/* LOGO */}
       <div className="flex-none flex items-center text-blue-900 w-44 p-2 h-16">
         <img
           onClick={handleGetPrincipal}
-          src="src/assets/freelancear (2).png"
+          src="/src/assets/ChatGPT Image 16 sept 2025, 19_06_10.png"
           alt="Logo de la página"
           className="h-auto w-auto cursor-pointer"
         />
@@ -47,6 +60,9 @@ export function Headers() {
       {/* BARRA DE BÚSQUEDA */}
       <div className="flex items-center space-x-2 bg-gray-100 text-gray-900 rounded-full p-2 shadow-md w-1/3 mx-auto">
         <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           type="text"
           className="flex-grow p-1 rounded-full bg-transparent placeholder-azulOscuro focus:outline-none text-sm text-azulOscuro"
           placeholder="Buscar servicios..."

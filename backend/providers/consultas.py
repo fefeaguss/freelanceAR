@@ -170,6 +170,18 @@ class ServiciosConsulta():
         db.delete(servicio)
         db.commit()
         return{"messge": "servicio eliminado"}       
+    
+    
+    
+    
+    def buscar_servicios(self, db: Session, q: str):
+        return (
+            db.query(Servicios)
+            .filter(
+                Servicios.nombre_servicio.ilike(f"%{q}%")
+            )
+            .all()
+        )
         
 
 class MensajesConsulta():

@@ -24,8 +24,8 @@ export function Principal() {
       <section className="relative w-full mb-8 text-center">
         <div>
           <img
-            src="src/assets/fondo.png"
-            className="w-full h-auto object-cover"
+            src="/src/assets/ChatGPT Image 16 sept 2025, 19_15_14.png"
+            className="w-screen h-64  object-cover "
             alt="Imagen de fondo"
           />
         </div>

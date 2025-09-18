@@ -5,14 +5,13 @@ import fetchServiceImages from "../api/fetchImagenes";
 //import { useUser } from "../context/UserContext";
 import { useSelector } from "react-redux";
 
-
 import axios from "axios";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 export function ServiceDetailPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const  user  = useSelector((state) => state.user.user); // Usuario logueado
+  const user = useSelector((state) => state.user.user); // Usuario logueado
 
   const searchParams = new URLSearchParams(location.search);
   const id_usuario = searchParams.get("id_usuario");
@@ -27,7 +26,6 @@ export function ServiceDetailPage() {
   const [currentIndex, setCurrentIndex] = useState(0); // 🔹 Índice de la imagen actual
 
   const [selectedServiceUser, setSelectedServiceUser] = useState(null);
-
 
   useEffect(() => {
     const fetchPromedio = async () => {
@@ -90,7 +88,7 @@ export function ServiceDetailPage() {
       const idConversacion = response.data.id_conversacion;
 
       // Navega al componente de chat y pasa el id_conversacion
-      navigate(`/Chat`, { state: { idConversacion }, });
+      navigate(`/Chat`, { state: { idConversacion } });
     } catch (error) {
       console.error(
         "Error al crear o unirse a la conversación:",
@@ -115,7 +113,7 @@ export function ServiceDetailPage() {
   return (
     <div className="flex flex-row max-w-5xl mx-auto mt-20 space-x-6">
       <div className="flex-1 w-2/3 p-4 bg-white border border-gray-300 rounded-lg">
-        <h1 className="text-3xl font-bold mb-4">
+        <h1 className="text-3xl font-bold mb-4 text-center">
           {services[0]?.nombre_servicio || "Servicio no encontrado"}
         </h1>
 
@@ -191,7 +189,7 @@ export function ServiceDetailPage() {
         {/* 🔹 seccion de perfil de vendedor */}
         <div className="seller-info p-6 rounded-lg mt-12">
           {/* Título */}
-          <h2 className="text-2xl font-bold mb-4 text-azulBrillante">
+          <h2 className="text-2xl font-bold mb-4 text-azulBrillante text-center">
             Conoce a {services[0]?.nombre_usuario}
           </h2>
 
@@ -203,12 +201,12 @@ export function ServiceDetailPage() {
               className="w-14 h-14 rounded-full mr-4 border border-gray-300"
             />
             <div>
-            <p
-  onClick={handlePerfil}
-  className="font-semibold text-lg -ml-12 text-blue-600 cursor-pointer hover:underline"
->
-  {services[0]?.nombre_usuario}
-</p>
+              <p
+                onClick={handlePerfil}
+                className="font-semibold text-lg  text-blue-600 cursor-pointer hover:underline"
+              >
+                {services[0]?.nombre_usuario}
+              </p>
 
               {promedio !== null && (
                 <p className="text-sm text-gray-600 flex items-center -ml-2">
@@ -258,10 +256,7 @@ export function ServiceDetailPage() {
             </div>
           </div>
 
-          {/* Descripción del vendedor */}
-          <p className="text-azulOscuro fond-mediun mt-4 leading-relaxed">
-            {services[0]?.descripcion_usuario}
-          </p>
+         
         </div>
       </div>
 
@@ -280,14 +275,15 @@ export function ServiceDetailPage() {
         </div>
 
         <footer className="tab-footer text-center mt-4">
-  <button
-    className="order-button bg-azulOscuro text-white py-2 px-4 rounded-md hover:bg-azulBrillante transition duration-200"
-    onClick={() => navigate("/pedido-page", { state: { serviceData: services[0] } })}
-  >
-    Solicitud de pedido
-  </button>
-</footer>
-
+          <button
+            className="order-button bg-azulOscuro text-white py-2 px-4 rounded-md hover:bg-azulBrillante transition duration-200"
+            onClick={() =>
+              navigate("/pedido-page", { state: { serviceData: services[0] } })
+            }
+          >
+            Solicitud de pedido
+          </button>
+        </footer>
 
         <div className="contact-section text-center mt-6">
           {isCurrentUser ? (

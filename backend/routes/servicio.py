@@ -1,5 +1,5 @@
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, Form, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, Form, UploadFile, File, Query
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 import os
@@ -176,3 +176,28 @@ async def asociar_usuario_servicio(id_servicio: str, id_usuario: str, db: Sessio
         raise HTTPException(status_code=400, detail={"estado": "error durante la asociación"})
     
     return JSONResponse(content={"estado": "usuario asociado al servicio"}, status_code=201)
+
+
+@router.get("/buscar")
+async def buscar_servicios(q: str = Query(..., min_length=1), db: Session = Depends(get_db)):
+    try:
+        consulta_servicio = ServiciosConsulta(db)
+        resultados = consulta_servicio.buscar_servicios(db, q)
+        
+        lista_res = []
+        for res_servicio in resultados:
+            imagenes = db.query(ImagenesServicios).filter(ImagenesServicios.id_servicio == res_servicio.id_servicio).all()
+            lista_res.append({
+                "id": res_servicio.id_servicio,
+                "nombre": res_servicio.nombre_servicio,
+                "descripcion": res_servicio.descripcion_servicio,
+                "precio": float(res_servicio.precio),
+                "categoria": res_servicio.categoria.nombre_categoria,
+                "imagenes": [{"id": img.id_imagen, "url": img.url_imagen} for img in imagenes]
+            })
+        
+        return JSONResponse(content=lista_res, status_code=200)
+    
+    except Exception as error:
+        logger.exception("Error inesperado")
+        raise HTTPException(status_code=500, detail={"estado": "error durante la búsqueda"})

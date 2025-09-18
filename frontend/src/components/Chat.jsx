@@ -111,7 +111,7 @@ useEffect(() => {
   if (!user || !selectedServiceUser) return <div>Cargando chat...</div>;
 
   return (
-    <div className="container mx-auto mt-16 flex w-3/4 h-full max-w-6xl gap-4">
+    <div className="container mx-auto mt-16 flex w-3/4 max-h-[80vh] max-w-6xl gap-4">
       {/* Chat principal */}
       <div className="flex-1 border border-gray-300 rounded-lg shadow p-4 flex flex-col bg-white">
         <div className="border-b pb-4 mb-4 flex items-center justify-between">

@@ -4,7 +4,7 @@ export function Footer() {
     return (
         <footer className="relative bottom-0 left-0 flex justify-between items-center bg-azulClaro text-white p-6 w-full h-16 mt-14">
             <div className="footer-logo">
-                <img src="src/assets/freelancear.png" alt="Logo" className="h-16 w-auto" />
+                <img src="/src/assets/ChatGPT Image 17 sept 2025, 15_34_18.png" alt="Logo" className="h-28 w-auto" />
             </div>
 
             <div className="footer-socials flex space-x-4">
