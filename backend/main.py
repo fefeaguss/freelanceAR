@@ -5,8 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 
-from models.models import Base, SessionLocal, engine, Usuarios,Servicios
-from sqlalchemy.orm import Session
+from models.models import Base, SessionLocal, engine, Usuarios,Servicios, ImagenesServicios
+from sqlalchemy.orm import Session, joinedload
 
 from routes.Usuarios import router as usuarios_router
 from routes.Categorias import router as categoria_router
@@ -75,6 +75,8 @@ origins = [
     "http://localhost:5173/principal",
     "http://localhost:5173/service",
     "http://localhost:5173/Chat",
+    "http://localhost:5173",  # tu frontend
+    "http://127.0.0.1:5173",  # por si accedés así
    
 ]
 
@@ -99,7 +101,7 @@ app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 @app.get("/v1/buscar")
 async def buscar(
     query: str = Query(..., description="Texto para buscar"),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     try:
         # Buscar perfiles por nombre
@@ -108,6 +110,8 @@ async def buscar(
         # Buscar servicios por nombre
         servicios = db.query(Servicios).filter(Servicios.nombre_servicio.ilike(f"%{query}%")).all()
         
-        return {"perfiles": perfiles, "servicios": servicios}
+       
+
+        return {"perfiles": perfiles, "servicios": servicios} 
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error durante la búsqueda")
