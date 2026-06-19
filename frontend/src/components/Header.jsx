@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../Context/userSlice";
 import MessagesMenu from "./MessagesMenu";
+import { SearchBar } from "./SearchBar";
 
 export function Headers() {
   const user = useSelector((state) => state.user.user);
@@ -10,6 +11,9 @@ export function Headers() {
   const [isDropDownOpen, setIsDropdownOpen] = useState(false);
   const [isMessagesOpen, setIsMessagesOpen] = useState(false);
   const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState({perfiles: [], servicios: []}); // 🔹 para almacenar resultados de búsqueda
+
 
   const toggledDropdown = () => setIsDropdownOpen(!isDropDownOpen);
   const toggleMessages = () => setIsMessagesOpen(!isMessagesOpen);
@@ -31,16 +35,16 @@ export function Headers() {
   };
 
   const handleSearch = async () => {
-  if (!query.trim()) return;
-  try {
-    const response = await fetch(`http://localhost:8000/v1/buscar?q=${query}`);
-    const data = await response.json();
-    onResults(data); // acá recibís los servicios listos para mostrar
-  } catch (error) {
-    console.error("Error buscando servicios:", error);
-  }
-};
+    if (!query.trim()) return;
 
+    try {
+      const response = await fetch(`http://localhost:8000/v1/buscar?query=${query}`);
+      if (!response.ok) throw new Error("Error en la búsqueda");
+      const data = await response.json();
+      setResults(data); // 🔹 guarda perfiles y servicios
+    } catch (error) {
+      console.error("Error buscando:", error);
+    }
   };
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
@@ -58,21 +62,7 @@ export function Headers() {
       </div>
 
       {/* BARRA DE BÚSQUEDA */}
-      <div className="flex items-center space-x-2 bg-gray-100 text-gray-900 rounded-full p-2 shadow-md w-1/3 mx-auto">
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-          type="text"
-          className="flex-grow p-1 rounded-full bg-transparent placeholder-azulOscuro focus:outline-none text-sm text-azulOscuro"
-          placeholder="Buscar servicios..."
-        />
-        <img
-          src="src/assets/search_24dp_2C75E0_FILL0_wght400_GRAD0_opsz24.png"
-          alt="Buscar"
-          className="h-5 w-5 cursor-pointer"
-        />
-      </div>
+      <SearchBar></SearchBar>
 
       {/* MENSAJES Y PERFIL */}
       <div className="relative flex items-center space-x-4 text-azulOscuro p-3 cursor-pointer h-16 -mr-4">

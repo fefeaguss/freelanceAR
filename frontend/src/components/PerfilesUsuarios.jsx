@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 export function PerfilUsuario() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { usuario } = location.state || {}; // Usuario seleccionado
+  const usuario = location.state?.usuario; // Usuario seleccionado
   const user = useSelector((state) => state.user.user); // Usuario logueado
   const { services, loading, error } = useFetchServices(); // Hook personalizado para obtener los servicios
   const [filteredServices, setFilteredServices] = useState([]);
@@ -30,19 +30,15 @@ export function PerfilUsuario() {
   }, [services, usuario?.id_usuario]);
   
   
-  const usuarioFinal = {
-    nombre_usuario: usuario?.nombre_usuario || user?.nombre,
-    apellido_usuario: usuario?.apellido_usuario || user?.apellido,
-    descripcion_usuario: usuario?.descripcion_usuario || user?.descripcion,
-    foto_final: usuario?.foto || user?.foto,
-  };
+  const usuarioFinal = usuario ?? null;
+
 
   useEffect(() => {
     const fetchPromedio = async () => {
       if (!usuario?.id_usuario) return;
       try {
         const response = await fetch(
-          `http://localhost:8000/v1/valoraciones/promedio?id_usuario_valorado=${usuario.id_usuario}`
+          `http://localhost:8000/v1/valoraciones/promedio?id_usuario_valorado=${usuario?.id_usuario}`
         );
         const data = await response.json();
         setPromedio(data.promedio);
@@ -103,7 +99,7 @@ export function PerfilUsuario() {
           {/* Imagen de perfil */}
           <div className="w-28 h-28 flex-shrink-0">
             <img
-              src={`http://localhost:8000${usuarioFinal.foto_final || "/assets/default-avatar.jpg"}`}
+              src={`http://localhost:8000${usuarioFinal.foto_usuario || "/assets/default-avatar.jpg"}`}
               alt="Foto de perfil"
               className="w-full h-full rounded-full border border-gray-300 object-cover shadow-md"
             />
@@ -111,7 +107,7 @@ export function PerfilUsuario() {
 
           {/* Información del usuario */}
           <div className="flex flex-col">
-            <h1 className="text-2xl font-bold">{usuarioFinal.nombre_usuario} {usuarioFinal.apellido_usuario}</h1>
+            <h1 className="text-2xl font-bold text-left">{usuarioFinal.nombre} {usuarioFinal.apellido}</h1>
 
             {/* Calificación */}
             {promedio !== null ? (
@@ -165,7 +161,7 @@ export function PerfilUsuario() {
                 key={servicio.id_servicio}
                 id_usuario={servicio.id_usuario}
                 id_servicio={servicio.id_servicio}
-                username={usuario.nombre_usuario}
+                username={usuarioFinal.username}
                 serviceName={servicio.nombre_servicio}
                 price={servicio.precio_servicio}
               />
